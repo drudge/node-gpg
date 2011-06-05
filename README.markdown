@@ -1,6 +1,6 @@
 #  GPG Encryption/Decryption in Node.js 
       
-  This module adds GPG encryption and decryption in node.js by way of the gpg command-line tool.
+  This module adds GPG encryption and decryption in node.js by way of the gpg command-line tool. **This is in-development and it not complete.**
 
 ## Requirements
 
@@ -20,7 +20,7 @@ The following are the major contributors of `node-gpg` (in no specific order).
 
 (The MIT License)
 
-Copyright (c) 2010 Nicholas Penree &lt;drudge@conceited.net&gt;
+Copyright (c) 2011 Nicholas Penree &lt;drudge@conceited.net&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
