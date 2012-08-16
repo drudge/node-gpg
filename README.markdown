@@ -15,12 +15,13 @@ In order to use the GPG encryption, you'll need to have the `gpg` binary in your
 The following are the major contributors of `node-gpg` (in no specific order).
 
   * Nicholas Penree ([drudge](http://github.com/drudge))
+  * [freewil](http://github.com/freewil)
 
 ## License 
 
 (The MIT License)
 
-Copyright (c) 2011 Nicholas Penree &lt;drudge@conceited.net&gt;
+Copyright (c) 2012 Nicholas Penree &lt;drudge@conceited.net&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
