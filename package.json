@@ -7,11 +7,22 @@
     "type": "git",
     "url": "git://github.com/drudge/node-gpg.git"
   },
-  "keywords": ["gpg", "encrypt", "decrypt", "pgp", "gnupg"],
+  "keywords": [
+    "gpg",
+    "encrypt",
+    "decrypt",
+    "pgp",
+    "gnupg"
+  ],
   "main": "./lib/gpg",
   "engines": {
     "node": ">= 0.4.0"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "~1.3.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
 }
