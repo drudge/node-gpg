@@ -7,6 +7,7 @@ describe('gpg', function(){
     it('should encrypt data', function(done){
       var mysecret = 'Hello World';
       var args = [
+        '--trust-model', 'always', // disable trust checking for purposes of running tests
         '--no-use-agent'
       , '--batch'
       , '--default-key', 'D5762441'
@@ -24,6 +25,7 @@ describe('gpg', function(){
     it('should clearsign data', function(done){
       var mymessage = 'Hello, this is me!';
       var args = [
+        '--trust-model', 'always', // disable trust checking for purposes of running tests
         '--no-use-agent'
       , '--batch'
       , '--default-key', 'D5762441'
