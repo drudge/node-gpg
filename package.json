@@ -23,6 +23,8 @@
     "mocha": "~1.3.2"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "import-test-keys": "gpg --import test/*.key",
+    "delete-test-keys": "gpg --delete-secret-key D5762441 && gpg --delete-key D5762441"
   }
 }
