@@ -16,7 +16,7 @@
   ],
   "main": "./lib/gpg",
   "engines": {
-    "node": ">= 0.4.0"
+    "node": ">= 0.8.0"
   },
   "dependencies": {},
   "devDependencies": {

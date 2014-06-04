@@ -1,5 +1,5 @@
-#  GPG Encryption/Decryption in Node.js [![Build Status](https://secure.travis-ci.org/drudge/node-gpg.png?branch=master)](https://secure.travis-ci.org/drudge/node-gpg)
-      
+#  GPG Encryption/Decryption in Node.js [![Build Status](https://travis-ci.org/drudge/node-gpg.svg?branch=master)](https://travis-ci.org/drudge/node-gpg)
+
   This module adds methods for GPG encryption and decryption in node.js by way of the gpg command-line tool.
 
 ## Requirements
@@ -17,7 +17,7 @@ The following are the major contributors of `node-gpg` (in no specific order).
   * Nicholas Penree ([drudge](http://github.com/drudge))
   * [freewil](http://github.com/freewil)
 
-## License 
+## License
 
 (The MIT License)
 
