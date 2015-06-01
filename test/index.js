@@ -9,10 +9,11 @@ describe('gpg', function(){
 
   describe('import keys', function() {
     it('should import the pubkey from file for the remaining tests', function(done) {
-      gpg.importKeyFromFile(path.join(__dirname, 'test.pub.asc'), function(err, result) {
+      gpg.importKeyFromFile(path.join(__dirname, 'test.pub.asc'), function(err, result, fingerprint) {
         assert.ifError(err);
         assert.ok(/Total number processed: 1/.test(result));
         assert.ok(/key 6F20F59D:/.test(result));
+        assert.ok(fingerprint === '6F20F59D');
         done();
       });
     });
@@ -20,10 +21,11 @@ describe('gpg', function(){
     it('should import the privkey as string for the remaining tests', function(done) {
       fs.readFile(path.join(__dirname, 'test.priv.asc'), function(err, file) {
         assert.ifError(err);
-        gpg.importKey(file, function(importErr, result) {
+        gpg.importKey(file, function(importErr, result, fingerprint) {
           assert.ifError(importErr);
           assert.ok(/secret keys read: 1/.test(result));
           assert.ok(/key 6F20F59D:/.test(result));
+          assert.ok(fingerprint === '6F20F59D');
           done();
         });
       });
