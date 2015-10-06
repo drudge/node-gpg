@@ -20,7 +20,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "2.x"
   },
   "scripts": {
     "test": "mocha"

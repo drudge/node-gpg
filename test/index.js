@@ -51,7 +51,12 @@ describe('gpg', function(){
   describe('encrypt', function(){
     it('should encrypt data', function(done){
       var mysecret = 'Hello World';
-      var args = ['--default-key', '6F20F59D', '--recipient', '6F20F59D', '--armor'];
+      var args = [
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--armor',
+        '--trust-model', 'always' // so we don't get "no assurance this key belongs to the given user"
+      ];
       gpg.encrypt(mysecret, args, function(err, encrypted){
         assert.ifError(err);
         assert.ok(encrypted.length);
