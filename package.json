@@ -24,5 +24,14 @@
   },
   "scripts": {
     "test": "mocha"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/drudge/node-gpg/issues"
+  },
+  "homepage": "https://github.com/drudge/node-gpg#readme",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "license": "MIT"
 }
