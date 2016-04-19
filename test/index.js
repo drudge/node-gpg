@@ -86,6 +86,15 @@ describe('gpg', function(){
         done();
       });
     });
+
+    it('should decrypt files', function(done){
+      gpg.call('', [ '--skip-verify', '--passphrase-fd', '0', '--decrypt', './test/hello.gpg' ], function(err, decrypted){
+        assert.ifError(err);
+        assert.ok(decrypted.length);
+        assert.equal(decrypted.toString('utf8'), 'Hello World\n');
+        done();
+      });
+    });
   });
 
   describe('clearsign', function(){
