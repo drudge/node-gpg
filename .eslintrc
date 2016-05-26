@@ -1,9 +1,9 @@
 {
   "rules": {
     "strict": 0,
-    "quotes": ["single"],
-    "curly": "multi-line",
-    "no-use-before-define": "nofunc",
+    "quotes": ["error", "single"],
+    "curly": ["error", "multi-line"],
+    "no-use-before-define": ["error", "nofunc"],
     "no-underscore-dangle": 0,
     "no-unused-vars": [2, {"vars": "local", "args": "none"}],
     "new-cap": 0,
