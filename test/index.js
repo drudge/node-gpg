@@ -67,7 +67,7 @@ describe('gpg', function(){
       });
     });
 
-    it('should encrypt stream', function (done) {
+    it('should encrypt stream with callStreaming()', function (done) {
       var args = [
         '--encrypt',
         '--default-key', '6F20F59D',
@@ -94,6 +94,23 @@ describe('gpg', function(){
           console.log('ERROR', error);
           done(error);
         });
+      });
+    });
+
+    it('should encrypt stream with encryptStream()', function (done) {
+      var args = [
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--armor',
+        '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
+      ];
+
+      var inStream = fs.createReadStream('./test/hello.txt');
+
+      gpg.encryptStream(inStream, args, function (err, res) {
+        assert.ifError(err);
+        assert.ok(/BEGIN PGP MESSAGE/.test(res));
+        done();
       });
     });
   });
@@ -127,12 +144,11 @@ describe('gpg', function(){
       });
     });
 
-    it('should decrypt stream', function (done) {
+    it('should decrypt stream with  callStreaming()', function (done) {
       var args = [
         '--decrypt',
         '--default-key', '6F20F59D',
         '--recipient', '6F20F59D',
-        '--armor',
         '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
       ];
 
@@ -154,6 +170,22 @@ describe('gpg', function(){
           console.log('ERROR', error);
           done(error);
         });
+      });
+    });
+
+    it('should decrypt stream with decryptStream()', function (done) {
+      var args = [
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
+      ];
+
+      var inStream = fs.createReadStream('./test/hello.gpg');
+
+      gpg.decryptStream(inStream, args, function (err, res) {
+        assert.ifError(err);
+        assert.ok(/Hello World/.test(res));
+        done();
       });
     });
   });
