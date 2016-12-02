@@ -2,6 +2,7 @@ var assert = require('assert');
 var gpg = require('../');
 var path = require('path');
 var fs = require('fs');
+var Stream = require('stream');
 var encryptedString;
 
 /*global describe,it*/
@@ -65,6 +66,53 @@ describe('gpg', function(){
         done();
       });
     });
+
+    it('should encrypt stream with callStreaming()', function (done) {
+      var args = [
+        '--encrypt',
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--armor',
+        '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
+      ];
+
+      var inStream = fs.createReadStream('./test/hello.txt');
+      var outStream = new Stream.PassThrough;
+
+      gpg.callStreaming(inStream, outStream, args, function (err) {
+        assert.ifError(err);
+        var out = [];
+        outStream.on('data', function (data) {
+          out.push(data);
+        });
+        outStream.on('end', function () {
+          var res = Buffer.concat(out).toString();
+          assert.ok(/BEGIN PGP MESSAGE/.test(res));
+          done();
+        });
+        outStream.on('error', function (error) {
+          console.log('ERROR', error);
+          done(error);
+        });
+      });
+    });
+
+    it('should encrypt stream with encryptStream()', function (done) {
+      var args = [
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--armor',
+        '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
+      ];
+
+      var inStream = fs.createReadStream('./test/hello.txt');
+
+      gpg.encryptStream(inStream, args, function (err, res) {
+        assert.ifError(err);
+        assert.ok(/BEGIN PGP MESSAGE/.test(res));
+        done();
+      });
+    });
   });
 
   describe('decrypt', function(){
@@ -92,6 +140,51 @@ describe('gpg', function(){
         assert.ifError(err);
         assert.ok(decrypted.length);
         assert.equal(decrypted.toString('utf8'), 'Hello World\n');
+        done();
+      });
+    });
+
+    it('should decrypt stream with  callStreaming()', function (done) {
+      var args = [
+        '--decrypt',
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
+      ];
+
+      var inStream = fs.createReadStream('./test/hello.gpg');
+      var outStream = new Stream.PassThrough;
+
+      gpg.callStreaming(inStream, outStream, args, function (err) {
+        assert.ifError(err);
+        var out = [];
+        outStream.on('data', function (data) {
+          out.push(data);
+        });
+        outStream.on('end', function () {
+          var res = Buffer.concat(out).toString();
+          assert.ok(/Hello World/.test(res));
+          done();
+        });
+        outStream.on('error', function (error) {
+          console.log('ERROR', error);
+          done(error);
+        });
+      });
+    });
+
+    it('should decrypt stream with decryptStream()', function (done) {
+      var args = [
+        '--default-key', '6F20F59D',
+        '--recipient', '6F20F59D',
+        '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
+      ];
+
+      var inStream = fs.createReadStream('./test/hello.gpg');
+
+      gpg.decryptStream(inStream, args, function (err, res) {
+        assert.ifError(err);
+        assert.ok(/Hello World/.test(res));
         done();
       });
     });
