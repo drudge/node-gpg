@@ -125,6 +125,14 @@ describe('gpg', function(){
       });
     });
 
+    it('should provide stderr output for successful calls', function(done) {
+      gpg.decrypt(encryptedString, function(err, decrypted, stderr){
+        assert.ok(/ID C343C0BC/.test(stderr)); // key information is sent to stderr by gpg
+        assert.equal(decrypted.toString('utf8'), 'Hello World');
+        done();
+      });
+    });
+
     it('should decrypt Buffers', function(done){
       var encryptedBuffer = new Buffer(encryptedString);
       gpg.decrypt(encryptedBuffer, function(err, decrypted){
