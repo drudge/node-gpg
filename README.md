@@ -1,4 +1,16 @@
-# GPG Encryption/Decryption in Node.js [![Build Status](https://travis-ci.org/drudge/node-gpg.svg?branch=master)](https://travis-ci.org/drudge/node-gpg)
+# GPG Encryption/Decryption in Node.js
+[![travis][travis-image]][travis-url]
+[![npm][npm-image]][npm-url]
+[![downloads][downloads-image]][downloads-url]
+
+[travis-image]: https://travis-ci.org/drudge/node-gpg.svg?branch=master
+[travis-url]: https://travis-ci.org/drudge/node-gpg
+
+[npm-image]: https://img.shields.io/npm/v/gpg.svg?style=flat
+[npm-url]: https://npmjs.org/package/gpg
+
+[downloads-image]: https://img.shields.io/npm/dm/gpg.svg?style=flat
+[downloads-url]: https://npmjs.org/package/gpg
 
 This module is a wrapper around `gpg` for use within Node. Node-GPG takes care of spawning `gpg`, passing it
 the correct arguments, and piping input to stdin. It can also pipe input in from files and output out to files.
