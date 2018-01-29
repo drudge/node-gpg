@@ -2,7 +2,7 @@
   "author": "Nicholas Penree <drudge@conceited.net> (http://penr.ee)",
   "name": "gpg",
   "description": "GPG encryption and decryption in node.js by way of the gpg command-line tool",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/drudge/node-gpg.git"
@@ -16,7 +16,7 @@
   ],
   "main": "./lib/gpg",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12.0"
   },
   "dependencies": {},
   "devDependencies": {

@@ -13,8 +13,8 @@ describe('gpg', function(){
       gpg.importKeyFromFile(path.join(__dirname, 'test.pub.asc'), function(err, result, fingerprint) {
         assert.ifError(err);
         assert.ok(/Total number processed: 1/.test(result));
-        assert.ok(/key 6F20F59D:/.test(result));
-        assert.ok(fingerprint === '6F20F59D');
+        assert.ok(/key 833744386F20F59D:/.test(result));
+        assert.ok(fingerprint === '833744386F20F59D');
         done();
       });
     });
@@ -25,8 +25,8 @@ describe('gpg', function(){
         gpg.importKey(file, function(importErr, result, fingerprint) {
           assert.ifError(importErr);
           assert.ok(/secret keys read: 1/.test(result));
-          assert.ok(/key 6F20F59D:/.test(result));
-          assert.ok(fingerprint === '6F20F59D');
+          assert.ok(/key 833744386F20F59D:/.test(result));
+          assert.ok(fingerprint === '833744386F20F59D');
           done();
         });
       });
@@ -53,8 +53,8 @@ describe('gpg', function(){
     it('should encrypt data', function(done){
       var mysecret = 'Hello World';
       var args = [
-        '--default-key', '6F20F59D',
-        '--recipient', '6F20F59D',
+        '--default-key', '833744386F20F59D',
+        '--recipient', '833744386F20F59D',
         '--armor',
         '--trust-model', 'always' // so we don't get "no assurance this key belongs to the given user"
       ];
@@ -70,8 +70,8 @@ describe('gpg', function(){
     it('should encrypt stream with callStreaming()', function (done) {
       var args = [
         '--encrypt',
-        '--default-key', '6F20F59D',
-        '--recipient', '6F20F59D',
+        '--default-key', '833744386F20F59D',
+        '--recipient', '833744386F20F59D',
         '--armor',
         '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
       ];
@@ -99,8 +99,8 @@ describe('gpg', function(){
 
     it('should encrypt stream with encryptStream()', function (done) {
       var args = [
-        '--default-key', '6F20F59D',
-        '--recipient', '6F20F59D',
+        '--default-key', '833744386F20F59D',
+        '--recipient', '833744386F20F59D',
         '--armor',
         '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
       ];
@@ -128,7 +128,7 @@ describe('gpg', function(){
     it('should provide stderr output for successful calls', function(done) {
       gpg.decrypt(encryptedString, function(err, decrypted, stderr){
         assert.ifError(err);
-        assert.ok(/ID C343C0BC/.test(stderr)); // key information is sent to stderr by gpg
+        assert.ok(/ID C7365BE1C343C0BC,/.test(stderr)); // key information is sent to stderr by gpg
         assert.equal(decrypted.toString('utf8'), 'Hello World');
         done();
       });
@@ -156,8 +156,8 @@ describe('gpg', function(){
     it('should decrypt stream with  callStreaming()', function (done) {
       var args = [
         '--decrypt',
-        '--default-key', '6F20F59D',
-        '--recipient', '6F20F59D',
+        '--default-key', '833744386F20F59D',
+        '--recipient', '833744386F20F59D',
         '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
       ];
 
@@ -184,8 +184,8 @@ describe('gpg', function(){
 
     it('should decrypt stream with decryptStream()', function (done) {
       var args = [
-        '--default-key', '6F20F59D',
-        '--recipient', '6F20F59D',
+        '--default-key', '833744386F20F59D',
+        '--recipient', '833744386F20F59D',
         '--trust-model', 'always', // so we don't get "no assurance this key belongs to the given user"
       ];
 
@@ -204,7 +204,7 @@ describe('gpg', function(){
       var mymessage = 'Hello, this is me!';
       var args = [
         '--trust-model', 'always'
-      , '--default-key', '6F20F59D'
+      , '--default-key', '833744386F20F59D'
       ];
       gpg.clearsign(mymessage, args, function(err, clearsigned){
         assert.ifError(err);
@@ -219,7 +219,7 @@ describe('gpg', function(){
       var mymessage = 'Hello, this is me!';
       var args = [
         '--trust-model', 'always'
-      , '--default-key', '6F20F59D'
+      , '--default-key', '833744386F20F59D'
       ];
       gpg.clearsign(mymessage, args, function(err, clearsigned){
         assert.ifError(err);
@@ -235,7 +235,7 @@ describe('gpg', function(){
 
   describe('remove keys', function() {
     it('should remove both keys', function(done) {
-      gpg.removeKey('6F20F59D', function(err, result) {
+      gpg.removeKey('833744386F20F59D', function(err, result) {
         assert.ifError(err);
         console.log(result.toString());
         done();
