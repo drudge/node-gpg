@@ -35,6 +35,11 @@ See [the source](lib/gpg.js) for more details.
 If a function you need is not implemented, you can call gpg directly with arguments of your choice by
 calling `gpg.call(stdinStr, argsArray, cb)`, or `gpg.callStreaming(inputFileName, outputFileName, argsArray, cb)`.
 
+## Promises
+
+All methods return promises. If you pass a callback as well as promise chaining then no promises will be rejected
+for safety when using callback pattern.
+
 ## Notes
 
 Existing implementations of PGP in Javascript are blocking and unfeasibly slow for server use.
