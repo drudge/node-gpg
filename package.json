@@ -21,7 +21,7 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "^2.10.2",
-    "mocha": "2.x"
+    "mocha": "3.x"
   },
   "scripts": {
     "pretest": "eslint .",
