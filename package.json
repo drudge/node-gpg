@@ -12,7 +12,8 @@
     "encrypt",
     "decrypt",
     "pgp",
-    "gnupg"
+    "gnupg",
+    "guld"
   ],
   "main": "./lib/gpg",
   "engines": {
@@ -20,8 +21,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^2.10.2",
-    "mocha": "3.x"
+    "eslint": "^5.1.0",
+    "mocha": "^5.2.0"
   },
   "scripts": {
     "pretest": "eslint .",
@@ -35,5 +36,6 @@
     "example": "examples",
     "test": "test"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "readme": "README.md"
 }
