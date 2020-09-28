@@ -1,39 +1,65 @@
 {
-  "author": "Nicholas Penree <drudge@conceited.net> (http://penr.ee)",
-  "name": "gpg",
-  "description": "GPG encryption and decryption in node.js by way of the gpg command-line tool",
-  "version": "0.6.0",
+  "name": "gpg-ts",
+  "description": "GPG encryption and decryption in node.js by way of the gpg command-line tool. Now with TypeScript.",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/drudge/node-gpg.git"
+    "url": "git://github.com/sdedovic/node-gpg-ts.git"
+  },
+  "author": "Stevan Dedovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sdedovic/node-gpg-ts/issues"
+  },
+  "homepage": "https://github.com/sdedovic/node-gpg-ts#readme",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "tsc",
+    "clean": "rm -rf dist",
+    "build": "rm -rf dist && tsc",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --passWithNoTests --watch",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [
     "gpg",
+    "ts",
+    "typescript",
     "encrypt",
     "decrypt",
     "pgp",
     "gnupg"
   ],
-  "main": "./lib/gpg",
-  "engines": {
-    "node": ">= 0.10.0"
+  "dependencies": {
+    "lodash": "^4.17.15"
   },
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "^2.10.2",
-    "mocha": "2.x"
+    "@types/jest": "^26.0.3",
+    "@types/lodash": "^4.14.157",
+    "@types/node": "^14.0.14",
+    "jest": "^26.1.0",
+    "ts-jest": "^26.1.1",
+    "ts-loader": "^7.0.5",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
   },
-  "scripts": {
-    "pretest": "eslint .",
-    "test": "mocha"
-  },
-  "bugs": {
-    "url": "https://github.com/drudge/node-gpg/issues"
-  },
-  "homepage": "https://github.com/drudge/node-gpg#readme",
-  "directories": {
-    "example": "examples",
-    "test": "test"
-  },
-  "license": "MIT"
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
+    "coverageReporters": [
+      "html"
+    ]
+  }
 }
