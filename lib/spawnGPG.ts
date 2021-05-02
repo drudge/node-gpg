@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import fs, {WriteStream, ReadStream} from "fs";
+import fs, { WriteStream, ReadStream } from "fs";
 import { ChildProcessWithoutNullStreams } from "node:child_process";
 import { Stream } from "node:stream";
 
@@ -123,7 +123,7 @@ export const streaming = async (
     // Go for it
     spawnIt(args).then((gpg) => {
       if (!isDestStream) {
-        gpg.on("close", function (code) {
+        gpg.on("close", function () {
           resolve(null);
         });
       } else {
