@@ -12,20 +12,31 @@ import { Stream } from "node:stream";
 import { IStreamingOptions, spawnGPG, streaming } from "./spawnGPG";
 const keyRegex = /^gpg: key (.*?):/;
 
-type SpawnGpgFn = (input: string, args: string[]) => Promise<Buffer>;
+type SpawnGpgFn = (
+  input: string,
+  args: string[],
+  executable: string
+) => Promise<Buffer>;
 type StreamingFn = (
   options: IStreamingOptions,
-  args: string[]
+  args: string[],
+  executable: string
 ) => Promise<fs.WriteStream>;
 
 export class GpgService {
-  constructor(private spawnGPG: SpawnGpgFn, private streaming: StreamingFn) {}
+  constructor(
+    private options: {
+      spawnGPG?: SpawnGpgFn;
+      streaming?: StreamingFn;
+      executable?: string;
+    }
+  ) {}
 
   /**
    * Raw call to gpg.
    */
   call(input: string, args: string[]): Promise<Buffer> {
-    return this.spawnGPG(input, args);
+    return this.options.spawnGPG(input, args, this.options.executable);
   }
 
   /**
@@ -33,11 +44,11 @@ export class GpgService {
    *
    * @api public
    */
-  callStreaming(inputFileName: string, outputFileName: string, args: string[]): Promise<fs.WriteStream> {
-    return this.streaming(
-      { source: inputFileName, dest: outputFileName },
-      args
-    );
+  callStreaming(
+    options: IStreamingOptions,
+    args: string[]
+  ): Promise<fs.WriteStream> {
+    return this.options.streaming(options, args, this.options.executable);
   }
 
   /**
@@ -46,7 +57,7 @@ export class GpgService {
    * @api public
    */
   encryptToFile(options: IStreamingOptions): Promise<fs.WriteStream> {
-    return this.streaming(options, ["--encrypt"]);
+    return this.callStreaming(options, ["--encrypt"]);
   }
 
   /**
@@ -67,7 +78,7 @@ export class GpgService {
    * @api public
    */
   encryptToStream(options: IStreamingOptions): Promise<fs.WriteStream> {
-    return this.streaming(options, ["--encrypt"]);
+    return this.callStreaming(options, ["--encrypt"]);
   }
 
   /**
@@ -97,7 +108,7 @@ export class GpgService {
    * @api public
    */
   encrypt(str: string | Buffer, args: string[] = []): Promise<Buffer> {
-    return this.spawnGPG(str as string, args.concat(["--encrypt"]));
+    return this.call(str as string, args.concat(["--encrypt"]));
   }
 
   /**
@@ -106,7 +117,7 @@ export class GpgService {
    * @api public
    */
   decrypt(str: string | Buffer, args: string[] = []): Promise<Buffer> {
-    return this.spawnGPG(str as string, args.concat(["--decrypt"]));
+    return this.call(str as string, args.concat(["--decrypt"]));
   }
 
   /**
@@ -124,7 +135,7 @@ export class GpgService {
    * @api public
    */
   decryptToFile(options: IStreamingOptions): Promise<fs.WriteStream> {
-    return this.streaming(options, ["--decrypt"]);
+    return this.callStreaming(options, ["--decrypt"]);
   }
 
   /**
@@ -155,7 +166,7 @@ export class GpgService {
    * @api public
    */
   decryptToStream(options: IStreamingOptions): Promise<fs.WriteStream> {
-    return this.streaming(options, ["--decrypt"]);
+    return this.callStreaming(options, ["--decrypt"]);
   }
 
   /**
@@ -164,7 +175,7 @@ export class GpgService {
    * @api public
    */
   clearsign(str: string | Buffer, args: string[] = []): Promise<Buffer> {
-    return this.spawnGPG(str as string, args.concat(["--clearsign"]));
+    return this.call(str as string, args.concat(["--clearsign"]));
   }
 
   /**
@@ -174,7 +185,7 @@ export class GpgService {
    */
   verifySignature(str: string | Buffer, args: string[] = []): Promise<Buffer> {
     // Set logger fd, verify otherwise outputs to stderr for whatever reason
-    return this.spawnGPG(
+    return this.call(
       str as string,
       args.concat(["--logger-fd", "1", "--verify"])
     );
@@ -185,7 +196,10 @@ export class GpgService {
    *
    * @api public
    */
-  importKeyFromFile(fileName: string, args: string[] = []): Promise<{ fingerprint: string, result: string }> {
+  importKeyFromFile(
+    fileName: string,
+    args: string[] = []
+  ): Promise<{ fingerprint: string; result: string }> {
     return fs.promises
       .readFile(fileName, "utf8")
       .then((str) => this.importKey(str, args));
@@ -199,8 +213,11 @@ export class GpgService {
    * @param {Function} fn      Callback containing the signed message Buffer.
    * @api public
    */
-  importKey(keyStr: string, args: string[] = []): Promise<{ fingerprint: string, result: string }> {
-    return this.spawnGPG(keyStr, args.concat(["--logger-fd", "1", "--import"]))
+  importKey(
+    keyStr: string,
+    args: string[] = []
+  ): Promise<{ fingerprint: string; result: string }> {
+    return this.call(keyStr, args.concat(["--logger-fd", "1", "--import"]))
       .then((result) => {
         // Grab key fingerprint and send it back as second arg
         const match = result.toString().match(keyRegex);
@@ -224,14 +241,17 @@ export class GpgService {
    * @param {Function} fn     Callback containing the signed message Buffer.
    * @api public
    */
-  removeKey(keyID: string, args: string[]): Promise<Buffer> {
+  removeKey(keyID: string, args: string[] = []): Promise<Buffer> {
     // Set logger fd, verify otherwise outputs to stderr for whatever reason
-    return this.spawnGPG(
+    return this.call(
       keyID,
       args.concat(["--logger-fd", "1", "--delete-secret-and-public-key"])
     );
   }
 }
 
-export const gpg = new GpgService(spawnGPG, streaming);
+export const gpg = new GpgService({
+  spawnGPG,
+  streaming,
+});
 export default gpg;

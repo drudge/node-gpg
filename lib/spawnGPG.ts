@@ -9,10 +9,11 @@ const writeStream = fs.createWriteStream;
 
 // Wrapper around spawn. Catches error events and passed global args.
 const spawnIt = async (
-  args: string[]
+  args: string[],
+  executable = "gpg"
 ): Promise<ChildProcessWithoutNullStreams> => {
   return new Promise((resolve, reject) => {
-    const gpg = spawn("gpg", globalArgs.concat(args || []));
+    const gpg = spawn(executable, globalArgs.concat(args || []));
     gpg.on("error", reject);
     return gpg;
   });
@@ -37,12 +38,13 @@ export interface IStreamingOptions {
  */
 export const spawnGPG = async (
   input: string,
-  args: string[]
+  args: string[],
+  executable = "gpg"
 ): Promise<Buffer> => {
   const buffers = [];
   let buffersLength = 0;
   let error = "";
-  const gpg = await spawnIt(args);
+  const gpg = await spawnIt(args, executable);
   return new Promise((resolve, reject) => {
     gpg.stdout.on("data", function (buf: Buffer) {
       buffers.push(buf);
@@ -79,7 +81,8 @@ export const spawnGPG = async (
  */
 export const streaming = async (
   options: IStreamingOptions,
-  args: string[]
+  args: string[],
+  executable = "gpg"
 ): Promise<WriteStream> => {
   return new Promise((resolve, reject) => {
     options = options || {};
@@ -121,7 +124,7 @@ export const streaming = async (
     }
 
     // Go for it
-    spawnIt(args).then((gpg) => {
+    spawnIt(args, executable).then((gpg) => {
       if (!isDestStream) {
         gpg.on("close", function () {
           resolve(null);
