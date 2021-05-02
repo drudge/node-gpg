@@ -20,7 +20,8 @@
     "pgp",
     "gnupg"
   ],
-  "main": "./lib/gpg",
+  "main": "./dist/index",
+  "typings": "./dist/index.d.ts",
   "engines": {
     "node": ">= 0.10.0"
   },
