@@ -29,6 +29,10 @@ export class GpgService {
       spawnGPG?: SpawnGpgFn;
       streaming?: StreamingFn;
       executable?: string;
+      reader?: {
+        readFile: (filePath: string) => Promise<Buffer>;
+        readFileString: (filePath: string) => Promise<string>;
+      }
     }
   ) {}
 
@@ -68,7 +72,7 @@ export class GpgService {
    * @api public
    */
   encryptFile(file: string): Promise<Buffer> {
-    return fs.promises.readFile(file).then((content) => this.encrypt(content));
+    return this.options.reader.readFile(file).then((content) => this.encrypt(content));
   }
 
   /**
@@ -108,7 +112,7 @@ export class GpgService {
    * @api public
    */
   encrypt(str: string | Buffer, args: string[] = []): Promise<Buffer> {
-    return this.call(str as string, args.concat(["--encrypt"]));
+    return this.call(str.toString(), args.concat(["--encrypt"]));
   }
 
   /**
@@ -117,7 +121,7 @@ export class GpgService {
    * @api public
    */
   decrypt(str: string | Buffer, args: string[] = []): Promise<Buffer> {
-    return this.call(str as string, args.concat(["--decrypt"]));
+    return this.call(str.toString(), args.concat(["--decrypt"]));
   }
 
   /**
@@ -126,7 +130,7 @@ export class GpgService {
    * @api public
    */
   decryptFile(file: string): Promise<Buffer> {
-    return fs.promises.readFile(file).then((content) => this.decrypt(content));
+    return this.options.reader.readFile(file).then((content) => this.decrypt(content));
   }
 
   /**
@@ -200,8 +204,8 @@ export class GpgService {
     fileName: string,
     args: string[] = []
   ): Promise<{ fingerprint: string; result: string }> {
-    return fs.promises
-      .readFile(fileName, "utf8")
+    return this.options.reader
+      .readFileString(fileName)
       .then((str) => this.importKey(str, args));
   }
 
@@ -226,9 +230,9 @@ export class GpgService {
       .catch((importError) => {
         // Ignorable errors
         if (/already in secret keyring/.test(importError.message)) {
-          return Promise.reject(importError.message);
+          throw new Error(importError.message);
         } else {
-          return Promise.reject(importError);
+          throw new Error(importError);
         }
       });
   }
@@ -253,5 +257,9 @@ export class GpgService {
 export const gpg = new GpgService({
   spawnGPG,
   streaming,
+  reader: {
+    readFile: fs.promises.readFile,
+    readFileString: filePath => fs.promises.readFile(filePath, "utf8")
+  }
 });
 export default gpg;
