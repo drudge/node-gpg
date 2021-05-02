@@ -23,14 +23,16 @@ In order to use Node-GPG, you'll need to have the `gpg` binary in your $PATH.
 
 ## Installation
 
-    npm install gpg
+```
+npm install @mykeels/gpg
+```
 
 ## Usage
 
 Node-GPG supports both direct calls to GPG with string arguments, and streaming calls for piping input and output
 from/to files.
 
-See [the source](lib/gpg.js) for more details.
+See [the examples](./EXAMPLES.md) for more details.
 
 If a function you need is not implemented, you can call gpg directly with arguments of your choice by
 calling `gpg.call(stdinStr, argsArray, cb)`, or `gpg.callStreaming(inputFileName, outputFileName, argsArray, cb)`.
@@ -49,3 +51,4 @@ The following are the major contributors of `node-gpg` (in no specific order).
   * Nicholas Penree ([drudge](http://github.com/drudge))
   * [freewil](http://github.com/freewil)
   * Samuel Reed [strml](http://github.com/strml)
+  * Michael Ikechi [mykeels](http://github.com/mykeels)
