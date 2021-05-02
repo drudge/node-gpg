@@ -13,14 +13,16 @@ describe("verify signature", () => {
       spawnGPG,
     });
     return gpg
-      .clearsign("Hello, this is me!", [
+      .verifySignature("Hello, this is me!", [
         "--trust-model",
         "always",
         "--default-key",
         "6F20F59D",
       ])
       .then((command) => {
-        expect(command).to.equal('gpg --batch --trust-model always --default-key 6F20F59D --clearsign "Hello, this is me!"');
+        expect(command).to.equal(
+          'gpg --batch --trust-model always --default-key 6F20F59D --logger-fd 1 --verify "Hello, this is me!"'
+        );
       });
   });
 });
