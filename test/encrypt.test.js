@@ -1,4 +1,3 @@
-import assert from "assert";
 import { GpgService } from "../dist";
 import fs from "fs";
 import chai, { expect } from "chai";
@@ -9,7 +8,7 @@ chai.use(chaiAsPromised);
 const spawnGPG = (input, args = []) =>
   Promise.resolve(`gpg --batch ${args.join(" ")} "${input}"`);
 
-describe.only("encrypt", function () {
+describe("encrypt", function () {
   it("should encrypt data", function () {
     const gpg = new GpgService({
       spawnGPG,
