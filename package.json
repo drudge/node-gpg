@@ -1,11 +1,11 @@
 {
   "author": "Nicholas Penree <drudge@conceited.net> (http://penr.ee)",
-  "name": "gpg",
+  "name": "@mykeels/gpg",
   "description": "GPG encryption and decryption in node.js by way of the gpg command-line tool",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/drudge/node-gpg.git"
+    "url": "git://github.com/mykeels/node-gpg.git"
   },
   "keywords": [
     "gpg",
@@ -28,9 +28,9 @@
     "test": "mocha"
   },
   "bugs": {
-    "url": "https://github.com/drudge/node-gpg/issues"
+    "url": "https://github.com/mykeels/node-gpg/issues"
   },
-  "homepage": "https://github.com/drudge/node-gpg#readme",
+  "homepage": "https://github.com/mykeels/node-gpg#readme",
   "directories": {
     "example": "examples",
     "test": "test"
