@@ -185,7 +185,7 @@ export class GpgService {
    *
    * @api public
    */
-  importKeyFromFile(fileName: string, args: string[] = []): Promise<string> {
+  importKeyFromFile(fileName: string, args: string[] = []): Promise<{ fingerprint: string, result: string }> {
     return fs.promises
       .readFile(fileName, "utf8")
       .then((str) => this.importKey(str, args));
@@ -199,12 +199,12 @@ export class GpgService {
    * @param {Function} fn      Callback containing the signed message Buffer.
    * @api public
    */
-  importKey(keyStr: string, args: string[] = []): Promise<string> {
+  importKey(keyStr: string, args: string[] = []): Promise<{ fingerprint: string, result: string }> {
     return this.spawnGPG(keyStr, args.concat(["--logger-fd", "1", "--import"]))
       .then((result) => {
         // Grab key fingerprint and send it back as second arg
         const match = result.toString().match(keyRegex);
-        return match && match[1];
+        return { fingerprint: match && match[1], result: result.toString() };
       })
       .catch((importError) => {
         // Ignorable errors
@@ -233,5 +233,5 @@ export class GpgService {
   }
 }
 
-const gpg = new GpgService(spawnGPG, streaming);
+export const gpg = new GpgService(spawnGPG, streaming);
 export default gpg;
