@@ -7,7 +7,7 @@ chai.use(chaiAsPromised);
 const streaming = (input, args = []) =>
   Promise.resolve(`gpg --batch ${args.join(" ")} "${input}"`);
 
-describe.only("callStreaming", () => {
+describe("callStreaming", () => {
   it("uses the right commands", function () {
     const gpg = new GpgService({
       streaming,
